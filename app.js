@@ -44,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Body Parser Middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}))
 
 // Passport Middleware
 app.use(passport.initialize());
@@ -55,7 +56,7 @@ app.use('/users', users);
 
 // Index Route
 app.get('/', (req, res) => {
-  res.send('invaild endpoint');
+  res.sendFile(path.join(__dirname,'/public/home.html'));
 });
 
 app.get('*', (req, res) => {

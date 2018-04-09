@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+    <form id = "registerForm" action="localhost:8080/users/register" method="post">
+    <label for="name">name</label>
+    <input type="text" name="name">
+    <br>
+    <label for="email">email</label>
+    <input type="email" name="email">
+    <br>
+    <label for="username">username</label>
+    <input type="text" name="username">
+    <br>
+    <label for="batch">batch</label>
+    <input type="text" name="batch">
+    <br>
+    <label for="branch">branch</label>
+    <input type="text" name="branch">
+    <br>
+    <label for="sex">sex</label>
+    <input type="radio" name="sex" value="male">male
+    <input type="radio" name="sex" value="female">female
+    <input type="radio" name="sex" value="others">others
+    <br>
+    <label for="phone">phone</label>
+    <input type="number" name="phone">
+    <br>
+    <label for="linkedin">linkedin</label>
+    <input type="text" name="linkedin">
+    <br>
+    <label for="higherDegree">higher Degree</label>
+    <input type="text" name="higherDegree">
+    <br>
+    <label for="collegeMasters">college masters</label>
+    <input type="text" name="collegeMasters">
+    <br>
+    <label for="currCity">currCity</label>
+    <input type="text" name="currCity">
+    <br>
+    <label for="currState">currState</label>
+    <input type="text" name="currState">
+    <br>
+    <label for="country">country</label>
+    <input type="text" name="country">
+    <br>
+    <label for="company">company</label>
+    <input type="text" name="company">
+    <br>
+    <label for="jobDesig">jobDesig</label>
+    <input type="text" name="jobDesig">
+    <br>
+    <label for="pastCompany">pastCompany</label>
+    <input type="text" name="pastCompany">
+    <br>
+    <label for="pastDesig">pastDesig</label>
+    <input type="text" name="pastDesig">
+    <br>
+    <label for="otherInfo">otherInfo</label>
+    <input type="text" name="otherInfo">
+    <br>
+    <label for="status">status</label>
+    <input type="text" name="status">
+    <br>
+    <label for="password">password</label>
+    <input type="password" name="password">
+    <button type="submit">Submit karo ab</button>
+    </form>
+
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+</body>
+
+<script>
+$(function(){
+    $('#registerForm').submit((e)=>{
+        e.preventDefault();
+        console.log();
+        let dataObj = {};
+        $('#registerForm').find('input').each((x,i)=>{
+            console.log(i.name);
+            // console.log(i.value);
+            if(i.name=="sex"){
+                if(i.checked)
+                dataObj[i.name]=i.value;            
+            }
+            else{
+                dataObj[i.name]=i.value;
+            }
+        })
+        console.log(dataObj);
+        $.post('http://localhost:8080/users/register',dataObj,(res)=>{
+            console.log("maine kuch kiya");
+            console.log(res);
+            if(res.success){
+            window.location = "http://localhost:8080/users/login";
+            }
+            else{
+                alert('please register again there was a failure')
+            }
+        })
+    })
+})
+
+
+
+
+</script>
+
+
+</html>
