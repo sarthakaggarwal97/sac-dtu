@@ -97,7 +97,7 @@ router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res,
   res.json({user: req.user});
 });
 
-router.put('/editProfile:_id', (req, res) => {
+router.put('/editProfile:_id', passport.authenticate('jwt', {session:false}), (req, res, next) => {
 	var id = req.params._id;
 	var user = req.body;
 	User.updateUser(id, user, {}, (err, user) => {
