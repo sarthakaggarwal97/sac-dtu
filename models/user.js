@@ -1,4 +1,4 @@
-import { currentId } from 'async_hooks';
+// import { currentId } from 'async_hooks';
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -89,7 +89,11 @@ module.exports.getUserByUsername = function(username, callback) {
 }
 
 module.exports.addUser = function(newUser, callback) {
+  // console.log(newUser);
+  
   bcrypt.genSalt(10, (err, salt) => {
+    // console.log(salt);
+    // console.log(newUser);
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if(err) throw err;
       newUser.password = hash;
@@ -98,6 +102,14 @@ module.exports.addUser = function(newUser, callback) {
   });
 }
 
+module.exports.genPassHash = function(password,callback){
+  bcrypt.genSalt(10,(err,salt)=>{
+    bcrypt.hash(password,salt,(err,hash)=>{
+      if(err) throw err;
+      callback(hash);
+    })
+  })
+}
 // Update User
 module.exports.updateUser = (id, user, options, callback) => {
 	var query = {_id: id};

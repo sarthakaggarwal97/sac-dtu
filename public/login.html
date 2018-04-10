@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login page</title>
+</head>
+<body>
+    <br>
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username">
+    <br>
+    <label for="username">password</label>
+    <input type="password" name="password" id="password">
+<br>
+    <button id = "submit">mujhe dabao ar aage jao</button>
+
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+
+  <script>
+  $(function(){
+      $('#submit').click(function(){
+          let username = $('#username').val();
+          let password = $('#password').val();
+          $.post('http://localhost:8080/users/authenticate',{username,password},(res)=>{
+              console.log(res);
+              localStorage.setItem('token',res.token);
+              localStorage.setItem('User',JSON.stringify(res.user));
+            if(res.success){
+                window.location = "http://localhost:8080/users/profile"
+            }
+            else{
+                alert("please add correct username/password")
+            }
+          })
+          
+      })
+  })
+  
+  </script>
+</body>
+</html>

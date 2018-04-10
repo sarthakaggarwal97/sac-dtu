@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>profile dikhaunga</title>
+</head>
+
+<body>
+    <div id="dataShow">loading ......</div>
+    <button id="logout">logout</button>
+    <button id="edit">Edit Profile</button>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+
+    <script>
+        $(function () {
+            //   console.log(localStorage.getItem('token'));
+            //getting profile data
+            $.ajax({
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                },
+                method: "POST",
+                url: 'http://localhost:8080/users/profile',
+                success: function (data) {
+                    $('#dataShow').html(JSON.stringify(data.user))
+                }
+            })
+
+            //logout Logic
+            $('#logout').click(function () {
+
+
+                $.ajax({
+                    headers: {
+                        Authorization: localStorage.getItem('token')
+                    },
+                    method: "POST",
+                    url: "http://localhost:8080/users/logout",
+                    success: function (res) {
+                        if (res.success) {
+                            localStorage.clear();
+                            window.location = 'http://localhost:8080';
+                        }
+                        else {
+                            alert('couldnt logout please try again');
+                        }
+                    }
+                })
+            })
+
+            //edit profile logic
+            $('#edit').click(function(){
+                window.location = "http://localhost:8080/users/editProfile"
+            })
+
+        })
+
+
+    </script>
+</body>
+
+</html>

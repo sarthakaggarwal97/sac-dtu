@@ -4,9 +4,15 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
+const path = require('path');
 
 // Register
+router.get('/register',(req,res)=>{
+  res.sendFile(path.join(__dirname+'/../public/register.html'))
+})
 router.post('/register', (req, res, next) => {
+  console.log(req.body);
+  
   let newUser = new User ({
     
     name: req.body.name,
@@ -42,6 +48,9 @@ router.post('/register', (req, res, next) => {
 });
 
 // Authenticate
+router.get('/login',(req,res)=>{
+  res.sendFile(path.join(__dirname+"/../public/login.html"))
+})
 router.post('/authenticate', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -93,19 +102,35 @@ router.post('/authenticate', (req, res, next) => {
 });
 
 // Profile
-router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.get('/profile',(req,res)=>{
+  res.sendFile(path.join(__dirname+'/../public/profile.html'))
+})
+router.post('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
   res.json({user: req.user});
 });
 
-router.put('/editProfile:_id', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.get('/editProfile',(req,res)=>{
+  res.sendFile(path.join(__dirname+'/../public/editProfile.html'))
+})
+
+router.put('/editProfile:_id',passport.authenticate('jwt', {session:false}), (req, res, next) => {
 	var id = req.params._id;
-	var user = req.body;
-	User.updateUser(id, user, {}, (err, user) => {
-		if(err){
-			throw err;
-		}
-		res.json(user);
-	});
+  var user = req.body;
+  User.genPassHash(user.password,function(hash){
+    user.password = hash;
+    User.updateUser(id, user, {}, (err, user1) => {
+      if(err){
+        throw err;
+      }
+      res.json({"user":user1,success:true});
+    });
+  })
 });
+router.post('/logout',passport.authenticate('jwt', {session:false}),(req,res)=>{
+  req.logOut();
+  res.json({
+    success:true
+  })
+})
 
 module.exports = router;
