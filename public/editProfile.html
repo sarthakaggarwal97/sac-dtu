@@ -83,6 +83,9 @@
     $(function () {
         let user  = JSON.parse(localStorage.getItem('User'));
         // console.log(user);
+        if(!user){
+            $('body').html('please login first')
+        }
         
         $('#registerForm').find('input[name=sex]').each((x, i) => {
             // console.log(i.name);

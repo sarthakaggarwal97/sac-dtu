@@ -26,8 +26,17 @@
                 method: "POST",
                 url: 'http://localhost:8080/users/profile',
                 success: function (data) {
+                    if(data.success){
                     $('#dataShow').html(JSON.stringify(data.user))
-                }
+                    }else{
+                        $('#dataShow').html("please login first");
+                        $('button').css(display,'none');
+                    }
+                },
+                statusCode:{401:function(data){
+                    $('#dataShow').html("please login first");
+                        $('button').css({display:'none'});
+                }}
             })
 
             //logout Logic
